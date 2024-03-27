@@ -1,0 +1,31 @@
+SELECT title, first_name, last_name
+FROM employee 
+ORDER BY levels DESC
+LIMIT 1
+
+
+SELECT billing_country, COUNT(*)
+FROM invoice
+GROUP BY billing_country
+ORDER BY billing_country DESC
+LIMIT 1
+
+
+SELECT total
+FROM invoice
+ORDER BY total DESC
+LIMIT 3
+
+
+SELECT billing_city, SUM(total) AS total_invoice
+FROM invoice
+GROUP BY billing_city
+ORDER BY SUM(total) DESC
+LIMIT 1
+
+
+SELECT c.first_name, c.last_name, c.customer_id, SUM(i.total) AS total_spending
+FROM invoice i join customer c on i.customer_id = c.customer_id
+GROUP BY c.first_name, c.last_name, c.customer_id
+ORDER BY SUM(i.total) DESC
+LIMIT 1
