@@ -77,3 +77,12 @@ ORDER BY i.billing_country ASC, COUNT(il.quantity) DESC)
 SELECT * FROM popular_genre WHERE RowNo <= 1
 
 
+WITH customer_with_country AS
+(SELECT c.customer_id, c.first_name, c.last_name, i.billing_country, SUM(total) AS total_spending,
+ROW_NUMBER() OVER(PARTITION BY i.billing_country ORDER BY SUM(total) DESC) AS RowNo
+FROM invoice i JOIN customer c ON i.customer_id = c.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name, i.billing_country
+ORDER BY i.billing_country ASC, SUM(total) DESC)
+SELECT * FROM customer_with_country WHERE RowNo <= 1
+
+
