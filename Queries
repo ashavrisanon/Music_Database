@@ -30,6 +30,21 @@ GROUP BY c.first_name, c.last_name, c.customer_id
 ORDER BY SUM(i.total) DESC
 LIMIT 1
 
+SELECT r.artist_id, r.name, COUNT(r.artist_id)
+FROM (( genre g JOIN track t ON g.genre_id = t.genre_id)
+JOIN album a ON a.album_id = t.album_id)
+JOIN artist r ON r.artist_id = a.artist_id
+WHERE g.name = 'Rock'
+GROUP BY r.artist_id, r.name
+ORDER BY COUNT(r.artist_id) DESC
+LIMIT 10
+
+
+SELECT name, milliseconds
+FROM track
+WHERE milliseconds > (SELECT AVG(milliseconds) FROM track)
+ORDER BY milliseconds DESC
+
 
 WITH best_selling_artist AS 
 (SELECT at.artist_id AS artist_id, at.name AS artist_name, SUM(il.unit_price*il.quantity) AS total_sales
